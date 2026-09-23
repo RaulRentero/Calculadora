@@ -24,110 +24,6 @@ namespace Calculadora
 
         }
 
-        //numeros 0-9
-
-        private void BTclear_Click(object sender, EventArgs e)
-        {
-            operacion = "";
-            richTextBox1.Text = "";
-        }
-
-        private void BTigual_Click(object sender, EventArgs e)
-        {
-            char caracter;
-            String num1 = "";
-            String num2 = "";
-            double total = 0;
-
-            for (int i = 0; i < operacion.Length; i++)
-            {
-                caracter = operacion[i];
-
-                if (caracter == '^' || caracter == '√')
-                {
-                    if (caracter == '√')
-                    {
-                        while (caracter != '^' || caracter != '√' || caracter != '/' || caracter != '*' || caracter != '+' || caracter != '-')
-                        {
-                            num2 += caracter;
-                        }
-
-                        double raiz = Math.Sqrt(double.Parse(num2));
-
-                        total += raiz;
-                    } else
-                    {
-                        while (caracter != '^' || caracter != '√' || caracter != '/' || caracter != '*' || caracter != '+' || caracter != '-')
-                        {
-                            num2 += caracter;
-                        }
-
-                        double elevado = Math.Pow(double.Parse(num1), double.Parse(num2));
-                        total += elevado;
-                    }
-
-                    num1 = "";
-                }
-                else if (caracter == '/' || caracter == '*')
-                {
-                    if (caracter == '/')
-                    {
-                        while (caracter != '^' || caracter != '√' || caracter != '/' || caracter != '*' || caracter != '+' || caracter != '-')
-                        {
-                            num2 += caracter;
-                        }
-
-                        if (num2.Equals(0))
-                        {
-                            throw new ArgumentException("No se puede dividir por cero");
-                        }
-
-                        double dividir = double.Parse(num1) / double.Parse(num2);
-                        total += dividir;
-                    } else
-                    {
-                        while (caracter != '^' || caracter != '√' || caracter != '/' || caracter != '*' || caracter != '+' || caracter != '-')
-                        {
-                            num2 += caracter;
-                        }
-
-                        double multiplicar = double.Parse(num1) * double.Parse(num2);
-                        total += multiplicar;
-                    }
-
-                    num1 = "";
-                }
-                else if (caracter == '+' || caracter == '-')
-                {
-                    if (caracter == '+')
-                    {
-                        while (caracter != '^' || caracter != '√' || caracter != '/' || caracter != '*' || caracter != '+' || caracter != '-')
-                        {
-                            num2 += caracter;
-                        }
-
-                        double sumar = double.Parse(num1) + double.Parse(num2);
-                        total += sumar;
-                    }
-                    else 
-                    {
-                        while (caracter != '^' || caracter != '√' || caracter != '/' || caracter != '*' || caracter != '+' || caracter != '-')
-                        {
-                            num2 += caracter;
-                        }
-
-                        double restar = double.Parse(num1) + double.Parse(num2);
-                        total += restar;
-                    }
-
-                    num1 = "";
-                }
-                else 
-                {
-                    num1 += caracter;
-                }
-            }
-        }
         private void button1_Click(object sender, EventArgs e)
         {
             operacion += "7";
@@ -213,12 +109,131 @@ namespace Calculadora
 
         private void button17_Click(object sender, EventArgs e)
         {
-            
+            char[] opSep = operacion.ToCharArray();
+            String num1 = "";
+            String num2 = "";
+            double total = 0;
+
+            for (int i = 0; i < opSep.Length; i++)
+            {
+                if (opSep[i] == '^' || opSep[i] == '√')
+                {
+                    if (opSep[i] == '√')
+                    {
+                        i++;
+                        while (opSep[i] != '^' && opSep[i] != '√' && opSep[i] != '/' && opSep[i] != '*' && opSep[i] != '+' && opSep[i] != '-')
+                        {
+                            num2 += opSep[i];
+                            i++;
+
+                            if (i == opSep.Length) break;
+                        }
+
+                        double raiz = Math.Sqrt(double.Parse(num2));
+
+                        total += raiz;
+                    }
+                    else
+                    {
+                        i++;
+                        while (opSep[i] != '^' && opSep[i] != '√' && opSep[i] != '/' && opSep[i] != '*' && opSep[i] != '+' && opSep[i] != '-')
+                        {
+                            num2 += opSep[i];
+                            i++;
+
+                            if (i == opSep.Length) break;
+                        }
+
+                        double elevado = Math.Pow(double.Parse(num1), double.Parse(num2));
+                        total += elevado;
+                    }
+
+                    num1 = "";
+                }
+                else if (opSep[i] == '/' || opSep[i] == '*')
+                {
+                    if (opSep[i] == '/')
+                    {
+                        i++;
+                        while (opSep[i] != '^' && opSep[i] != '√' && opSep[i] != '/' && opSep[i] != '*' && opSep[i] != '+' && opSep[i] != '-')
+                        {
+                            num2 += opSep[i];
+                            i++;
+
+                            if (i == opSep.Length) break;
+                        }
+
+                        if (double.Parse(num2) == 0)
+                        {
+                            throw new ArgumentException("No se puede dividir por cero");
+                        }
+
+                        double dividir = double.Parse(num1) / double.Parse(num2);
+                        total += dividir;
+                    }
+                    else
+                    {
+                        i++;
+                        while (opSep[i] != '^' && opSep[i] != '√' && opSep[i] != '/' && opSep[i] != '*' && opSep[i] != '+' && opSep[i] != '-')
+                        {
+                            num2 += opSep[i];
+                            i++;
+
+                            if (i == opSep.Length) break;
+                        }
+
+                        double multiplicar = double.Parse(num1) * double.Parse(num2);
+                        total += multiplicar;
+                    }
+
+                    num1 = "";
+                }
+                else if (opSep[i] == '+' || opSep[i] == '-')
+                {
+                    if (opSep[i] == '+')
+                    {
+                        i++;
+                        while (opSep[i] != '^' && opSep[i] != '√' && opSep[i] != '/' && opSep[i] != '*' && opSep[i] != '+' && opSep[i] != '-')
+                        {
+                            num2 += opSep[i];
+                            i++;
+
+                            if (i == opSep.Length) break;
+                        }
+
+                        double sumar = double.Parse(num1) + double.Parse(num2);
+                        total += sumar;
+                    }
+                    else
+                    {
+                        i++;
+                        while (opSep[i] != '^' && opSep[i] != '√' && opSep[i] != '/' && opSep[i] != '*' && opSep[i] != '+' && opSep[i] != '-')
+                        {
+                            num2 += opSep[i];
+                            i++;
+
+                            if (i == opSep.Length) break;
+                        }
+
+                        double restar = double.Parse(num1) - double.Parse(num2);
+                        total += restar;
+                    }
+
+                    num1 = "";
+                }
+                else
+                {
+                    num1 += opSep[i];
+                }
+            }
+
+            richTextBox1.Text = total.ToString();
         }
 
         private void button18_Click(object sender, EventArgs e)
         {
-           
+            operacion = "";
+            richTextBox1.Text = "";
         }
 
         private void button10_Click(object sender, EventArgs e)
